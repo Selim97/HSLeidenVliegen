@@ -22,8 +22,10 @@ public class FirebaseUtil {
         if (firebaseUtil == null) {
             firebaseUtil = new FirebaseUtil();
             mFirebaseDatabase = FirebaseDatabase.getInstance();
-            mDeals = new ArrayList<TravelDeal>();
         }
+
+        // Telkens wanneer deze klasse wordt aangeroepen ververst de ArrayList zich
+        mDeals = new ArrayList<TravelDeal>();
         mDatabaseReference = mFirebaseDatabase.getReference().child(ref);
     }
 }
