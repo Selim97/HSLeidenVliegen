@@ -5,5 +5,9 @@
         android:title="Nieuwe Bestemming"
         app:showAsAction="never"
         />
+    <item android:id="@+id/logout_menu"
+        android:title="Uitloggen"
+        app:showAsAction="never"
+        />
 
 </menu>
