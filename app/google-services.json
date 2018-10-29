@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "587733533142",
+    "firebase_url": "https://hsleiden-vliegen.firebaseio.com",
+    "project_id": "hsleiden-vliegen",
+    "storage_bucket": "hsleiden-vliegen.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587733533142:android:c31d44099367a121",
+        "android_client_info": {
+          "package_name": "ikpmd.dursun.hsleidenvliegen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587733533142-vqm3ski3r34ek10gc0mn3ci94cavf8fd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ikpmd.dursun.hsleidenvliegen",
+            "certificate_hash": "5b7e4d5d1244f4581d5d5c988ce31472535bb142"
+          }
+        },
+        {
+          "client_id": "587733533142-tb1ttfh7ueuh8kunrkatvsdtjlrj6orr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuAed5QVzEeBWZFTPvpHkU-Uuib6i1bts"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587733533142-tb1ttfh7ueuh8kunrkatvsdtjlrj6orr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

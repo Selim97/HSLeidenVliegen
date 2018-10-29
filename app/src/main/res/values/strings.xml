@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">HSLeiden Vliegen</string>
+    <string name="title_hint">Vliegbestemming</string>
+    <string name="price_hint">Prijs (alleen cijfers)</string>
+    <string name="description_hint">Beschrijving</string>
+    <string name="save_menu">save</string>
+</resources>
