@@ -21,12 +21,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity {
-    ArrayList<TravelDeal> deals;
+/*    ArrayList<TravelDeal> deals;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
 
     // 'Luistert' wanneer er een nieuwe item wordt toegevoegd, vervolgens wordt deze getoond
-    private ChildEventListener mChildListener;
+    private ChildEventListener mChildListener;*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +38,13 @@ public class ListActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_activity_menu, menu);
+        MenuItem insertMenu = menu.findItem(R.id.insert_menu);
+        // toont de menu als de gebruiker admin is, anders niet
+        if (FirebaseUtil.isAdmin == true) {
+            insertMenu.setVisible(true);
+        } else {
+            insertMenu.setVisible(false);
+        }
         return true;
     }
 
@@ -84,5 +91,9 @@ public class ListActivity extends AppCompatActivity {
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvDeals.setLayoutManager(dealsLayoutManager);
         FirebaseUtil.attachListener();
+    }
+
+    public void showMenu() {
+        invalidateOptionsMenu();
     }
 }

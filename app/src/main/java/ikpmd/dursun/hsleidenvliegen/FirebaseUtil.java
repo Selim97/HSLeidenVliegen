@@ -2,10 +2,14 @@ package ikpmd.dursun.hsleidenvliegen;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -24,24 +28,28 @@ public class FirebaseUtil {
     public static FirebaseAuth.AuthStateListener mAuthListener;
     public static ArrayList<TravelDeal> mDeals;
     private static final int RC_SIGN_IN = 123;
-    private static Activity caller;
-
+    private static ListActivity caller;
     // Deze (lege) constructor zorgt ervoor dat deze klasse niet van buitenaf kan worden geïnstantieerd
     private FirebaseUtil(){}
+    public static boolean isAdmin;
 
     // Creeert een reference naar de child die wordt meegegeven als parameter
-    public static void openFbReference (String ref, final Activity callerActivity) {
+    public static void openFbReference (String ref, final ListActivity callerActivity) {
         if (firebaseUtil == null) {
             firebaseUtil = new FirebaseUtil();
             mFirebaseDatabase = FirebaseDatabase.getInstance();
             mFirebaseAuth = FirebaseAuth.getInstance();
             caller = callerActivity;
+
             mAuthListener = new FirebaseAuth.AuthStateListener() {
                 @Override
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 //  controleert of de gebruiker is ingelogd, zo nee dan wordt hij/zij verwezen naar login pagina
                     if (firebaseAuth.getCurrentUser() == null) {
                         FirebaseUtil.signIn();
+                    } else {
+                        String userId = firebaseAuth.getUid();
+                        checkAdmin(userId);
                     }
                     Toast.makeText(callerActivity.getBaseContext(), "Welkom terug!",Toast.LENGTH_LONG).show();
                 }
@@ -63,8 +71,44 @@ public class FirebaseUtil {
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
+                        .setIsSmartLockEnabled(false)
                         .build(),
                 RC_SIGN_IN);
+    }
+
+    // Controleert of gebruiker behoort tot 'administrators' of niet
+    private static void checkAdmin(String uid) {
+        FirebaseUtil.isAdmin=false;
+        DatabaseReference ref = mFirebaseDatabase.getReference().child("administrators")
+                .child(uid);
+        ChildEventListener listener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                FirebaseUtil.isAdmin=true;
+                caller.showMenu();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        ref.addChildEventListener(listener);
     }
 
     public static void attachListener() {
