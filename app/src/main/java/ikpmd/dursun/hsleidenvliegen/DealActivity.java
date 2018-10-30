@@ -3,8 +3,10 @@ package ikpmd.dursun.hsleidenvliegen;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -118,7 +120,7 @@ public class DealActivity extends AppCompatActivity {
 
         if (requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
             // Haalt de Uri van de image op
-            Uri imageUri = data.getData();
+            final Uri imageUri = data.getData();
             StorageReference ref = FirebaseUtil.mStorageRef.child(imageUri.getLastPathSegment());
 
             // Image wordt in de Firebase Database storage geplaatst
@@ -126,7 +128,11 @@ public class DealActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     String url = taskSnapshot.getDownloadUrl().toString();
+                    String pictureName = taskSnapshot.getStorage().getPath();
                     deal.setImageUrl(url);
+                    deal.setImageName(pictureName);
+                    Log.d("Url: ", url);
+                    Log.d("Naam", pictureName);
                     // Toont de image
                     showImage(url);
                 }
@@ -155,6 +161,20 @@ public class DealActivity extends AppCompatActivity {
             return;
         }
         mDatabaseReference.child(deal.getId()).removeValue();
+        if (deal.getImageName() != null && deal.getImageName().isEmpty() == false) {
+            StorageReference picRef = FirebaseUtil.mStorage.getReference().child(deal.getImageName());
+            picRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d("Verwijder Afbeelding", "Afbeelding succesvol verwijdert");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("Verwijder Image", e.getMessage());
+                }
+            });
+        }
     }
 
     // Na het opslaan van een vlucht wordt je teruggestuurd naar ListActivity
