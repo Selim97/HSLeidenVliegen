@@ -1,6 +1,7 @@
 package ikpmd.dursun.hsleidenvliegen;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,13 +11,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class DealActivity extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
@@ -25,6 +29,7 @@ public class DealActivity extends AppCompatActivity {
     EditText txtTitle;
     EditText txtDescription;
     EditText txtPrice;
+    ImageView imageView;
     TravelDeal deal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,7 @@ public class DealActivity extends AppCompatActivity {
         txtTitle = (EditText) findViewById(R.id.txtTitle);
         txtDescription = (EditText) findViewById(R.id.txtDescription);
         txtPrice = (EditText) findViewById(R.id.txtPrice);
+        imageView = (ImageView) findViewById(R.id.image);
         Intent intent = getIntent();
         TravelDeal deal = (TravelDeal) intent.getSerializableExtra("Deal");
         if (deal==null) {
@@ -47,6 +53,7 @@ public class DealActivity extends AppCompatActivity {
         txtTitle.setText(deal.getTitle());
         txtDescription.setText(deal.getDescription());
         txtPrice.setText(deal.getPrice());
+        showImage(deal.getImageUrl());
 
         Button btnImage = findViewById(R.id.btnImage);
 
@@ -120,6 +127,8 @@ public class DealActivity extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     String url = taskSnapshot.getDownloadUrl().toString();
                     deal.setImageUrl(url);
+                    // Toont de image
+                    showImage(url);
                 }
             });
         }
@@ -167,5 +176,23 @@ public class DealActivity extends AppCompatActivity {
         txtDescription.setEnabled(isEnabled);
         txtPrice.setEnabled(isEnabled);
 
+    }
+
+    // Laat de afbeelding die bij de item(vlucht) hoort zien
+    private void showImage (String url) {
+        // Controleert of de url leeg is of niet
+        if (url != null && url.isEmpty() == false) {
+            // Geeft de afbeelding de breedte toe van de beeldscherm van jouw device
+            int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+            // Picasso is een makkelijk te gebruiken library, hiermee hoef je niet zelf
+            // te cachen, placeholder regelen, downloaden (van afbeelding), groottes aanpassen enz.
+            Picasso.with(this)
+                    .load(url)
+                    // Verandert de afbeelding naar 2/3 van zijn formaat
+                    .resize(width, width*2/3)
+                    .centerCrop()
+                    // Laat de afbeelding zien
+                    .into(imageView);
+        }
     }
 }
