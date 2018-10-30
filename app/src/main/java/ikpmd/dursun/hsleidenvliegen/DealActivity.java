@@ -98,16 +98,19 @@ public class DealActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.save_menu, menu);
-        // Controleerd of gebruiker admin is, zo niet dan laat de applicatie geen menu items zien
+        // Controleerd of gebruiker admin is, zo niet dan laat de applicatie geen menu items zien, zo wel dan laat de applicatie wel menu items zien
         if (FirebaseUtil.isAdmin) {
             menu.findItem(R.id.delete_menu).setVisible(true);
             menu.findItem(R.id.save_menu).setVisible(true);
             enableEditTexts(true);
+            findViewById(R.id.btnImage).setEnabled(true);
 
         } else {
             menu.findItem(R.id.delete_menu).setVisible(false);
             menu.findItem(R.id.save_menu).setVisible(false);
             enableEditTexts(false);
+            findViewById(R.id.btnImage).setEnabled(false);
+
 
         }
 
