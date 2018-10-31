@@ -113,7 +113,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
         public DealViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            // Om de bestemming, beschrijving en prijs van de vlucht te vinden
+            // Om de bestemming, beschrijving, prijs en afbeelding van de vlucht te vinden
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
             tvPrice = (TextView) itemView.findViewById(R.id.tvPrice);
@@ -124,7 +124,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
 
         }
 
-        // Neemt een vlucht als parameter en plaatst de Titel (van de vlucht) in TextView
+        // Neemt een vlucht als parameter en plaatst de Titel (vliegbestemming), beschrivijng en prijs in TextView
         public void bind(TravelDeal deal) {
             tvTitle.setText(deal.getTitle());
             tvDescription.setText(deal.getDescription());
